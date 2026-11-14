@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;--vio:#7a4fd0;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;--vio:#a985f0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;--vio:#a985f0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.author{font:500 15px var(--sans);color:var(--ink);margin:-4px 0 12px;letter-spacing:.01em}
+.lead{max-width:780px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex-wrap:wrap}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell.clickable{cursor:pointer}.cell.clickable:hover{border-color:var(--accent)}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+.svgbox svg{width:100%;height:auto;display:block}
+.barrow{display:grid;grid-template-columns:200px 1fr 120px;gap:8px;align-items:center;font-size:13px;margin:6px 0}
+.barrow .b{height:18px;border-radius:5px;background:var(--accent);transition:width .25s}
+.barrow span:last-child{font-family:var(--mono);text-align:right}
+@media (max-width:640px){.barrow{grid-template-columns:110px 1fr 96px}}
+table.t{border-collapse:collapse;font:13px var(--mono);width:100%}
+table.t th,table.t td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.t th{color:var(--muted);font-weight:600}
+table.t th:first-child,table.t td:first-child{text-align:left}
+table.t tr.sel td{background:var(--accent-soft)}
+table.t tr.clk{cursor:pointer}table.t tr.clk:hover td{background:var(--soft)}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+canvas.px{image-rendering:pixelated}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+.hidden{display:none!important}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>AE – Détection d’anomalies</title>
+<style>
+.thumbs{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;max-width:640px}
+.thumbs button{padding:0;border:2px solid var(--line);border-radius:5px;cursor:pointer;background:#000;aspect-ratio:1;overflow:hidden}
+.thumbs button.a{border-color:var(--neg)}
+.thumbs button.on{outline:3px solid var(--hl);outline-offset:1px}
+.thumbs canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+.trio{display:flex;gap:16px;flex-wrap:wrap}
+.trio figure{margin:0;display:flex;flex-direction:column;gap:5px;align-items:center}
+.trio canvas{width:128px;height:128px;border-radius:8px;border:1px solid var(--line);image-rendering:pixelated}
+#inp{cursor:crosshair}
+.trio figcaption{font:12px var(--mono);color:var(--muted)}
+.cm{display:grid;grid-template-columns:auto 1fr 1fr;gap:4px;font:13px var(--mono);max-width:360px}
+.cm div{padding:8px;border-radius:6px;background:var(--soft);text-align:center}
+.cm .h{background:none;color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Autoencodeurs</span><a href="index.html">← Toutes les animations</a></div>
+  <h1>Détection d’anomalies par autoencodeur</h1>
+  <p class="author">Moulay Akhloufi</p>
+  <p class="lead">On entraîne un AE (64 → 32 → 8 → 32 → 64) <strong>uniquement sur des images normales</strong> (chiffres 8×8 de scikit-learn). Il apprend à bien les reconstruire. Une image anormale (ici, une tache 3×3) est mal reconstruite : l’<strong>erreur de reconstruction</strong> devient un score d’anomalie. On choisit un seuil au-delà duquel on déclare « anomalie ».</p>
+</header>
+<div class="stack">
+  <section class="card stack">
+    <div class="grid2">
+      <div class="stack">
+        <h2>Distribution des erreurs</h2>
+        <div id="hist" class="svgbox"></div>
+        <div id="thr"></div>
+      </div>
+      <div class="stack">
+        <h2>Courbe ROC</h2>
+        <div id="roc" class="svgbox"></div>
+      </div>
+    </div>
+    <div class="row" style="align-items:flex-start">
+      <div class="cm" id="cm"></div>
+      <div class="kpis" id="kpis"></div>
+    </div>
+  </section>
+  <section class="card stack">
+    <h2>Une image à la fois</h2>
+    <div class="mlabel">24 IMAGES DE TEST (CADRE ROUGE = AVEC TACHE). CLIQUEZ SUR L’ENTRÉE POUR AJOUTER VOTRE PROPRE TACHE.</div>
+    <div class="thumbs" id="thumbs"></div>
+    <div class="trio" id="trio"></div>
+    <div class="formula" id="one"></div>
+  </section>
+  <section class="card stack">
+    <h2>À retenir</h2>
+    <div class="note">Aucune anomalie n’est nécessaire pour entraîner : c’est utile quand les défauts sont rares ou imprévisibles (contrôle de qualité, fraude, surveillance de machines, imagerie médicale).</div>
+    <div class="note">Le seuil fixe le compromis : plus il est bas, plus on détecte d’anomalies (rappel élevé), mais plus on déclenche de fausses alarmes. L’AUROC résume la qualité du score pour tous les seuils (0,5 = hasard, 1 = parfait). La carte d’erreur |x − x̂| montre <em>où</em> se trouve l’anomalie.</div>
+  </section>
+</div>
+<footer><span>© 2026 Moulay Akhloufi · Deep Learning · Autoencodeurs</span><a href="index.html">Toutes les animations du module →</a></footer>
+</div>
+<script>
+// ---- utilitaires communs ----
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') e.className = v;
+    else if (k === 'style' && v && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; sk.startsWith('--') ? e.style.setProperty(sk, sv) : (e.style[sk] = sv); } }
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'html') e.innerHTML = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return x > 0 ? '∞' : '—';
+  let s = (Math.round(x * 10 ** d) / 10 ** d).toString();
+  if (s === '-0') s = '0';
+  if (s.includes('e')) s = x.toExponential(1);
+  return s.replace('.', ',').replace('-', '−');
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('fr-CA').replace(/ | /g, ' '); }
+function fmtM(n) { return n >= 1e9 ? fmt(n / 1e9, 2) + ' G' : n >= 1e6 ? fmt(n / 1e6, 2) + ' M' : n >= 1e3 ? fmt(n / 1e3, 1) + ' k' : fmtInt(n); }
+function par(x) { return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function divColor(v, m) {
+  if (!m) return 'var(--zero)';
+  const t = clamp(Math.abs(v) / m, 0, 1);
+  return `color-mix(in oklab, ${v < 0 ? 'var(--neg)' : 'var(--pos)'} ${Math.round(t * 70)}%, var(--zero))`;
+}
+function seqColor(v, m, c = 'var(--accent)', top = 75) {
+  const t = m ? clamp(v / m, 0, 1) : 0;
+  return `color-mix(in oklab, ${c} ${Math.round(t * top)}%, var(--zero))`;
+}
+function rng(seed = 1) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+function gauss(R) { let u = 0; while (!u) u = R(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * R()); }
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const isDark = () => matchMedia('(prefers-color-scheme: dark)').matches;
+class Player {
+  constructor({ n, onStep, speed = 900 }) { this.n = n; this.i = 0; this.onStep = onStep; this.speed = speed; this.t = null; }
+  go(i) { this.i = ((i % this.n) + this.n) % this.n; this.onStep(this.i); }
+  next() { this.go(this.i + 1); } prev() { this.go(this.i - 1); }
+  play() { this.stop(); this.t = setInterval(() => this.next(), this.speed); this.playing = true; }
+  stop() { clearInterval(this.t); this.t = null; this.playing = false; }
+  toggle() { this.playing ? this.stop() : this.play(); return this.playing; }
+  setSpeed(ms) { this.speed = ms; if (this.playing) this.play(); }
+}
+function playerBar(p, { extra = [], prevNext = true } = {}) {
+  const play = h('button', { class: 'btn primary', onclick: () => { play.textContent = p.toggle() ? '❚❚ Pause' : '▶ Lecture'; } }, '▶ Lecture');
+  const sp = h('input', { type: 'range', min: 100, max: 2000, step: 50, value: 2100 - p.speed, oninput: e => p.setSpeed(2100 - +e.target.value), 'aria-label': 'Vitesse' });
+  const kids = prevNext ? [h('button', { class: 'btn', onclick: () => { bar.stopUI(); p.prev(); } }, '◀ Précédent'), play, h('button', { class: 'btn', onclick: () => { bar.stopUI(); p.next(); } }, 'Suivant ▶')] : [play];
+  const bar = h('div', { class: 'controls' }, ...kids, h('label', { class: 'ctl' }, h('span', {}, 'Vitesse'), sp), ...extra);
+  bar.stopUI = () => { p.stop(); play.textContent = '▶ Lecture'; };
+  return bar;
+}
+function slider({ label, min, max, step = 1, value, onInput, fmtv = v => v, width }) {
+  const out = h('b', {}, fmtv(value));
+  const inp = h('input', { type: 'range', min, max, step, value, style: width ? { width } : null });
+  inp.addEventListener('input', () => { out.textContent = fmtv(+inp.value); onInput(+inp.value); });
+  const w = h('label', { class: 'ctl' }, h('span', { class: 'lab' }, h('span', {}, label), out), inp);
+  w.input = inp; w.set = v => { inp.value = v; out.textContent = fmtv(+v); };
+  return w;
+}
+function segmented(options, value, onChange) {
+  const s = h('div', { class: 'seg', role: 'group' }); const b2 = new Map();
+  const btns = options.map(([v, l]) => { const b = h('button', { class: v === value ? 'on' : '', onclick: () => { btns.forEach(x => x.classList.remove('on')); b.classList.add('on'); onChange(v); } }, l); b2.set(v, b); return b; });
+  s.append(...btns); s.set = v => { btns.forEach(b => b.classList.remove('on')); b2.get(v) && b2.get(v).classList.add('on'); };
+  return s;
+}
+function matrix(rows, cols, { cs = 40, gap = 3, cls = '' } = {}) {
+  const el = h('div', { class: 'mat ' + cls, style: { gridTemplateColumns: `repeat(${cols}, var(--cs))`, '--cs': cs + 'px', gap: gap + 'px' } });
+  const cells = [];
+  for (let r = 0; r < rows; r++) { cells.push([]); for (let c = 0; c < cols; c++) { const d = h('div', { class: 'cell' }); el.append(d); cells[r].push(d); } }
+  return { el, cells };
+}
+// image en niveaux de gris (Float32Array w×h, valeurs 0..1 ou signées) → canvas
+function grayCanvas(data, w, hh, { scale = 4, mode = 'gray', max = null, el = null } = {}) {
+  const cv = el || h('canvas', { class: 'px' }); cv.width = w; cv.height = hh;
+  cv.style.width = w * scale + 'px'; cv.style.height = hh * scale + 'px';
+  const ctx = cv.getContext('2d'), im = ctx.createImageData(w, hh);
+  let m = max; if (m == null) { m = 1e-9; for (const v of data) m = Math.max(m, Math.abs(v)); }
+  for (let i = 0; i < w * hh; i++) {
+    const v = data[i]; let c;
+    if (mode === 'gray') { const g = 255 * clamp(v / m, 0, 1); c = [g, g, g]; }
+    else if (mode === 'heat') { const t = clamp(v / m, 0, 1); c = [255 * Math.min(1, t * 1.6), 255 * clamp(t * 1.6 - .5, 0, 1), 60 * (1 - t)]; }
+    else { const t = clamp(v / m, -1, 1); c = t >= 0 ? [255 - 200 * t, 255 - 130 * t, 255] : [255, 255 + 190 * t, 255 + 180 * t]; }
+    im.data[4 * i] = c[0]; im.data[4 * i + 1] = c[1]; im.data[4 * i + 2] = c[2]; im.data[4 * i + 3] = 255;
+  }
+  ctx.putImageData(im, 0, 0); return cv;
+}
+// tracé de courbes simple en SVG
+function lineChart({ series, w = 520, hgt = 240, xmin, xmax, ymin, ymax, xlabel = '', ylabel = '', pad = 38, extra = '', xticks = 5, yticks = 4, yfmt = v => fmt(v, 2), xfmt = v => fmt(v, 1) }) {
+  const X = x => pad + (x - xmin) / (xmax - xmin) * (w - pad - 12), Y = y => hgt - pad + 8 - (y - ymin) / (ymax - ymin) * (hgt - pad - 4);
+  let s = `<svg viewBox="0 0 ${w} ${hgt + 10}">`;
+  for (let i = 0; i <= yticks; i++) { const v = ymin + (ymax - ymin) * i / yticks; s += `<line x1="${pad}" x2="${w - 12}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${pad - 6}" y="${Y(v) + 4}" font-size="11" text-anchor="end" fill="var(--muted)">${yfmt(v)}</text>`; }
+  for (let i = 0; i <= xticks; i++) { const v = xmin + (xmax - xmin) * i / xticks; s += `<text x="${X(v)}" y="${hgt + 6}" font-size="11" text-anchor="middle" fill="var(--muted)">${xfmt(v)}</text>`; }
+  if (xlabel) s += `<text x="${w - 12}" y="${hgt - pad + 2}" font-size="11" text-anchor="end" fill="var(--muted)">${xlabel}</text>`;
+  if (ylabel) s += `<text x="${pad + 4}" y="12" font-size="11" fill="var(--muted)">${ylabel}</text>`;
+  for (const sr of series) {
+    if (sr.pts.length < 2 && !sr.dots) continue;
+    if (sr.dots) for (const [x, y] of sr.pts) s += `<circle cx="${X(x)}" cy="${Y(clamp(y, ymin, ymax))}" r="${sr.r || 3.5}" fill="${sr.color}" fill-opacity="${sr.op || 1}"/>`;
+    else s += `<path d="${sr.pts.map(([x, y], i) => (i ? 'L' : 'M') + X(x).toFixed(1) + ',' + Y(clamp(y, ymin - (ymax - ymin), ymax + (ymax - ymin))).toFixed(1)).join('')}" fill="${sr.fill || 'none'}" fill-opacity="${sr.fillop || .2}" stroke="${sr.color}" stroke-width="${sr.width || 2.5}" ${sr.dash ? `stroke-dasharray="${sr.dash}"` : ''}/>`;
+  }
+  return s + (typeof extra === 'function' ? extra(X, Y) : extra) + '</svg>';
+}
+
+// ---- petits perceptrons (poids int8 en base64) ----
+function deq(o) { const bin = atob(o.d), a = new Float32Array(bin.length); for (let i = 0; i < bin.length; i++) { let v = bin.charCodeAt(i); if (v > 127) v -= 256; a[i] = v * o.s; } return { a, shape: o.shape }; }
+function loadMLP(list) { return list.map(deq); } // [W0, b0, W1, b1, …], W de forme (entrées, sorties)
+function mlp(P, x, acts) {
+  let h = x;
+  for (let l = 0; l < acts.length; l++) {
+    const W = P[2 * l], b = P[2 * l + 1].a, [I, O] = W.shape, w = W.a, o = new Float32Array(O);
+    for (let j = 0; j < O; j++) o[j] = b[j];
+    for (let i = 0; i < I; i++) { const xi = h[i]; if (!xi) continue; const r = i * O; for (let j = 0; j < O; j++) o[j] += xi * w[r + j]; }
+    const a = acts[l];
+    if (a === 'relu') for (let j = 0; j < O; j++) o[j] = Math.max(0, o[j]);
+    else if (a === 'sig') for (let j = 0; j < O; j++) o[j] = 1 / (1 + Math.exp(-o[j]));
+    h = o;
+  }
+  return h;
+}
+const encode = (E, x) => mlp(E, x, ['relu', 'lin']);
+const decode = (D, z) => mlp(D, z, ['relu', 'sig']);
+function u8img(b64) { const bin = atob(b64), a = new Float32Array(bin.length); for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i) / 255; return a; }
+const DIGIT_COL = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
+
+const DATA = {"E": [{"shape": [64, 32], "s": 0.03091023676097393, "d": "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"}, {"shape": [32], "s": 0.004018873907625675, "d": "/LsM8gKT8gm/Y/u54fntAKICFyhO+gDigRhMCdbIICM="}, {"shape": [32, 8], "s": 0.010838447138667107, "d": "1gQyCzsp9vvJBCL8+u8I6C0X+tH49Bfh7LT2KUwCORkQ8wbl5AnF5+gCBRT850y47P8c0R4y7PcVFcYOAvAQ2B4FIAjY9yTTz60Oxn/Y7fZD8fry7hvs2xoOJPv5HRfx0vEQGAAo3RIG698FAjf+7An1FefC1hzt1kEN8ybxLg3yCfop3vvf1gs16AX88B0A7AAN3g7/0wwOHyPeIvvX/tH49wbHE74Z7hIKFjYaJwX4EO/hBBb++PMq1QYeECDeziXz7e8Z5MsoySAG8AXx1vTrAeEZ7w3p1uflAtYGPxkCBh3gHREN2QbRLxAEH8jrDdoTIyP9EtvM8tb01vEa+Q=="}, {"shape": [8], "s": 0.0035443645901978016, "d": "B9fcuyHUAn8="}], "D": [{"shape": [8, 32], "s": 0.01621006429195404, "d": "8PspBh8iK9vRCwHv2xzby+X6/cfpDdmsMRPhIhju7Mzs6uLfLt0I4BAFLwERIiX00bf+NQAR7vbaRRI59eHyIcwXAPDqRY/r7jMa/vIXDuTTZxsJ+v4PTtH2Jucv+0C70c3tAgroKsnzPwcy5wf3Ch1FzAbfAh4BN9UW7gko7ClDAfPkF9z54PAR5BTJtETX7PIH3qcP6dP91gcMESKoBroD8UUL1BQq7hII0hYbFhacAuMGskQtDfHfIin3DzQj5yf29dmB9Sj25CjyPgcPAsbW2vXk7sYP7NDtsxUSNjjI1hnmwPb8APv98NLgAPj//x/hJwLpFdgL4uglK+YXTQ=="}, {"shape": [32], "s": 0.015464168041944504, "d": "Pc38CpYPKypaeX8E7jAPBxb+YPsPNBnG8NigSwAGBwI="}, {"shape": [32, 64], "s": 0.0433453693985939, "d": "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"}, {"shape": [64], "s": 0.011047177016735077, "d": "+MSBmvzS5Pfw0+nt087p5fWz4qG259Tl89TTqeXJ3vP2183d6Ma79PHQxbrD17rj9MKwoKTZza73zqTN4fadzQ=="}], "test": ["AACA/++AAAAAEP///yAAAAAg//+fAAAAACD//78AAAAAYP//zwAAAAAQ//+vAAAAAAD//58AAAAAAHDv7wAAAA==", "ABDPz58AAAAAEM//7wAAAAAAv///AAAAAAD//78AAAAAAO//zxAAAAAA7/+vAAAAAAD///9QAAAAAN//74AQAA==", "AAAQ3+9AAAAAAI//n1AAAAAQ/58AAAAAADD/v1AAAAAAQP///4AAAAAQ73BA/0AAAACvz0D/jwAAABC///+PAA==", "AADP3zAAAAAAQP/vrwAAAABwv0D/AAAAADBgQP8AAAAAAACPvwAAAAAAEN9wAAAAABDf/5+fIAAAAK+/399gAA==", "AAAA398QAAAAADD/3wAAAAAAn/8gAAAAAAD//4AwAAAAMP/vgN8gAAAA/68Ar58AAACP33D/nwAAAAC//98QAA==", "AAAAn88wAAAAAID/378AAAAw/88A3xAAAFD/YADfUAAAYP8AAO9AAAAgzxBQ/0AAAACf///fEAAAACCvz2AAAA==", "ACDv72AAAAAAAJ/P/1AAAAAAACD/jwAAAAAAMP+vAAAAAAAAz98QAAAAAABw/1AAABBAYM/vEAAAMO/fryAAAA==", "ABBgv+9QAAAAcN/f/3AAAAAAIN+fAAAAAACv/yAAAAAAACCv/78AAAAAAABA33AAAAAgQFDfcAAAAGD/34AAAA==", "AAAA34AAAAAAADD/MAAAAAAAv4+PcAAAAGDvEN+vYAAAz9+A//9wAACA////MAAAAAAQr98AAAAAAADf3wAAAA==", "ABDv/58AAAAAQP+P/0AAAAAgv1D/MAAAAAAAYP8wAAAAABDvzwAAAAAAgP9AAAAAACD/z0BAMAAAIM//////IA==", "AAAAr/9QAAAAAACf/1AAAAAAQP//UAAAAK////8wAAAAUIDf/yAAAAAAAN//IAAAAAAAr/8gAAAAAACA/4AAAA==", "AACAr4Cf34AAMO+vv/9QEAAQ/wCvgAAAAAAQUP9QAAAAADDv/98AAAAAcP8wAAAAAABgzwAAAAAAAK9wAAAAAA==", "AACA/58gAAAAAL/P368AAAAAn8+A/yAAAABA7+//gAAAAAAwgK/PAAAAAAAAUP9AAAAQICBw/1AAADDf//+vEA==", "ACDP//+fAAAg779wn/8AAAAwEAC/zwAAAAAAMP9AAAAAAADPjwAAAAAAYO8wAAAAAAD/n2CAgBAAIO///7+/EA==", "AABA73AAAAAAEM+//yAgAABwrwCvvxAAAECAYM8wAAAAMP/vEAAAAAAg/99gAAAAADD/n98wAAAAACCPvzAAAA==", "ABCfz48gAAAAIL9Av58AAAAA31CvrwAAAAAggIDvIAAAAAAAAL9QAAAAAAAAQL8AAABAEACArwAAAK///98wAA==", "AACPz68QAAAAAGBAj98QAAAAEFAAr0AAAADP3wBwUAAAMN8QAJ9AAAAw3wAg7xAAACDPgL+vAAAAAIDfnxAAAA==", "AEDvrxAAAAAAgP//QAAAAAAgYM+AAAAAAAAAgFAAAAAAAACvQAAAAAAAUP8AAAAAACDP/8+/YAAAUP/v/78wAA==", "AAAQn++vcAAAAFD///+vAAAAYP///2AAAAC///+/AAAAIP///2AAAAAgv/+/AAAAAACP//9wAAAAADC//yAAAA==", "AAAwgI+PAAAAYP+/gFAAAACvzwAAAAAAAI//n1AAAAAAADCAz58QAAAAAAAAn3AAAABQIEDPgAAAAHD/34AAAA==", "AAAAn68AAAAAADD/nwAAAAAAgP8AAAAAAAC/3wAAAAAAAN//72AAAAAAv/+/72AAAABw/5/P3wAAAACPz69gAA==", "AACfv///gAAAQP//r1BAAACfvzAAAAAAAL+vAAAAAAAAYP/fgAAAAAAAUJ//MAAAAABAgP8wAAAAAM//rwAAAA==", "AACf/58AAAAAgP/f/yAAAAAw74D/MAAAAAAAr/9wAAAAAAAwn+8gAAAAnwAA34AAABD/YIDPgAAAEO//z58QAA==", "AABAz/+vAAAAj/+Pn+8AAABQQAC/rwAAAAAAUP+/EAAAAAAQj++AAAAAAAAAgL8AAAAQYID/gAAAAFD/748QAA==", "AAAgr89QAAAAAP+fz/9wAAAA358An68AAABA3//PEAAAAACvz78QAAAAgJ8g3zAAAACfnzDvEAAAACDv/2AAAA==", "AAAAn48AAAAAADDvz1AAAAAAz88QzwAAAAD/cAD/AAAAAP+vMO8AAAAA33D/vwAAAACPz+9gAAAAAADPnwAAAA==", "AAAAUM8QAAAAABDvvwAAAAAAQP9QAAAAAACv3zAAAAAAAK///0AAAAAAr69QzwAAAABgz3DvAAAAAABQ348AAA==", "AAAw71AAAAAAAFD/nwAAAAAAYP9wAAAAACC//48AAAAAgP/v3wAAAAAAYDD/YAAAAABggL/vv58AACDP///vrw==", "AABg7+8wAAAAMP/f388AAABg7yAQ31AAAIDfIACPgAAAgP9AAICAAABQ/2AAr48AABD//9//jwAAAFDf758QAA==", "AABQ788gAAAAEO+vgM8AAABQ3wAA31AAAI//EABwjwAAj88AAFDfAABg/yAAUO8AACDfr1DfvwAAAFDv/+8wAA==", "AABg779QAAAAAID//88QAAAAgP//vwAAAACA//+fAAAAAP///1AAAABQ////EAAAADDv//8gAAAAAJ//7zAAAA==", "AAAAn48AAAAAAFDvAACPUAAA358AcP9AAFD/cFD/YAAAr////98AAAAwQK//gAAAAAAAcP8gAAAAAAC/vwAAAA==", "AAAwv//fAAAAMO//798AAAAwvxDvgAAAAAAAj/+AAAAAAACf//+AAAAAACBQz4AAAAAgr6/vUAAAADD//48AAA==", "AAAw7///vwAAAL+/cP9gAABAvwCPzwAAAAAQEM9wAAAAAIDP//9gAAAAv++/YBAAAAAA71AAAAAAADD/IAAAAA==", "AABA3/9QAAAAQP///4AAAACf74//QAAAABAgz98AAAAAACD/YAAAAAAAcP8AUHAAAACA/8//YAAAACDv/2AAAA==", "AAAAEO8wAAAAAACAzwCPcAAAIO9AAO9QACDP36+f7wAAr+/P//+fAAAAAAAw/1AAAAAAAI/fAAAAAAAg/2AAAA==", "AAAwr///QAAAAI+/v/+PAAAAAAAQ/4AAAAAAj9//jwAAABD//99QAAAAAGD/QAAAAAAAr98AAAAAABDvcAAAAA==", "AABAv89QAAAAAN////9AAABgzyAQr4AAAGCvAACAgAAAQP8AAJ+AAABA/0CA/zAAAAD///+/AAAAAEDv3zAAAA==", "AAAQz4AAAAAAAHD/MAAAAAAA348AcHAAADD/MCDvjwAAj/+Av+8AAABg////cAAAAAAwv+8QAAAAAADPjwAAAA==", "AABgn4AwAAAAAGD//48AAAAAj///YAAAAABw//+fAAAAAK///4AAAAAAcP//jwAAAACf//9gAAAAAECPv68gAA==", "ACDvzyAAAAAAcP/P7wAAAACvr1D/QAAAABAQcP8QAAAAAAC/rwAAAAAAQP+AgCAAAAC/////rwAAIO/PYEAQAA==", "ABDP//+vAAAAn/9wAAAAAABQ70AAAAAAACD/31AAAAAAMO///zAAAAAAEACvrwAAAAAQUO+PAAAAAM//zxAAAA==", "AADv//+/IAAAIP/vv78wAABA/4AAAAAAAID/v0AAAAAAAL///wAAAAAAADD/gAAAACBgj/+AAAAAEO//7zAAAA==", "AACAv88QAAAAUL8gYM8AAACvUABgvwAAAHCfQM/vAAAAEK+/cL9AAAAAAAAAQI8AAACfUAAwzwAAAGC//8+fAA==", "AAAg/4AAAAAAAID/YAAAAAAA758AAAAAAED/IAAAAAAAgP///98gAACA/3BA/4AAABD/j2D/QAAAADC//78AAA==", "AABw//9QAAAAEO+v368AAAAAAAC/gAAAAAAwgN+/UAAAAN///59QAAAAIIDfAAAAAAAQ74AAAAAAAIDfEAAAAA==", "ACD/////QAAAQP9ggHAQAABA/3AgAAAAAED///9gAAAAAFBAn+8AAAAAAAAQ32AAACDfQED/gAAAMM///+8QAA==", "AACv/7+//3AAMP+PgP+fAAAQnwBg3yAAAAAQgO/vrwAAAL//73AgAAAAQM9wAAAAAABA/zAAAAAAAL+/AAAAAA==", "AAAQv48AAAAAAK+fIAAAAABA3wAAAAAAAFCPAAAAAAAAgJ+v/98QAAAg/58wcK8AAADPgBCAvwAAACC//+9QAA==", "AAAQ7+8gAAAAADC//2AAAAAAAED/QAAAAAAwgP9AAAAAn/////+AAACAr9/fUBAAAAAA72AAAAAAABDvIAAAAA==", "AAAAAHBgAAAAAABg72AAAAAAEO9Q3zAAAAC/gED/AAAAUP+Pn/9AAAAQr7/f30AAAAAAAICAAAAAAAAAr3AAAA==", "AABg39/PrwAAAN+/UEAgAAAw//9AAAAAACCvr/8wAAAAAAAAcJ8AAAAAAAAQrwAAAAAwcL+AAAAAAHDfrxAAAA==", "AAAwr88QAAAAYP+vz2AAABD/gACvQAAAAEBAAP8AAAAAAABQrwAAAAAAAICPAAAAAAAAv49AUAAAABDfz7/vUA==", "AAAAz48AAAAAAIDvUAAAAAAA34AAAAAAACD/MAAgAAAAAP/P//9gAAAQ/69AcL8AAACvv1DPjwAAABC/768gAA==", "AABwv58AAAAAMP///48QAAAAgP//rxAAAACf//8AAAAAMP/f/0AAAABAzwBw7wAAAEDfICD/AAAAAGCvn1AAAA==", "AABgn49AAAAAAN+f//8QAABA7xCP/wAAADD///+AAAAAAL/f/1AAAAAAvxCPvwAAAAD/YN+PAAAAAIC/YBAAAA==", "AABA/xAAAAAAAL/PABAQAAAw/4BQ/2AAAI//YN//IAAAr////48AAAAAn+/vIAAAAAAw/48AAAAAAFD/MAAAAA==", "AAAwr3AQAAAAAJ/v398AAAAg/58Qv0AAACD/MABAgAAAUL8AAGCAAAAQvwAAr48AAADvj9/vEAAAAEDv70AAAA==", "AABQ39+AIAAAMO8wAM+AAABQvwAg74AAACDvj9/fgAAAABAwAL9QAAAAAAAAv0AAAGDvIADfEAAAEHDfv48AAA==", "AABg/+9QAAAAACDP388AAAAAACDf3xAAAAAAMP+fAAAAAAAA358AAAAAAACf3wAAAACAcL//AAAAAGD//78QAA==", "AACA3///7xAAAGBgUL+/EAAAACCvvzAAAABQ348AAAAAAI//jwAAAAAAEK//cAAAAAAgcP9wAAAAAI/PUAAAAA==", "AAAgj8+/IAAAEN/PcJ9gAAAAz4AQcHAAAAAwz9/fAAAAAAAA7+8QAAAAAI9QgFAAAAAAz0DPIAAAAADP72AAAA==", "AACf/99QAAAAIP//gAAAAAAAj///UAAAAABw//8wAAAAAN/fz68AAABQ/xBg7wAAAHDfj8/vEAAAEK//72AAAA==", "AABw/98wAAAAAI/fr+8AAAAAEFAA71AAAAAAAAD/UAAAAAAAMP9AAAAAABC/3xAAAABQv///3xAAAID/35/PMA==", "AABw///vgAAAAL/v7/+vAAAAADDf7yAAAAAQ378QAAAAABD/71AAAAAAADC/7wAAAAAAQL/fEAAAAJ/vn0AAAA==", "AAAwv3AAAAAAAN+/v0AAAAAg3wAQzwAAABC/AABwUAAAIM8AACCfAAAA7zAAMN8AAABwv4CvvwAAACCv/68gAA==", "ADDv/98QAAAAIL/P/0AAAAAAAGD/MAAAAAAQ758AAAAAAGD/QAAAAAAg758AAAAAAED/r4CvMAAAMP///78wAA==", "AABQzyAAAAAAAED/cAAAAAAAQP9AAAAAAABA/2AAAAAAAI//nwAAAAAAIK/vEAAAAACfz//v/48AADC///+vIA==", "AAAA7yAAAAAAAAD/QAAAAAAAYI8AAAAAAAC///+PEAAAAN+vAICPAAAAr98wIN8AAACAr0DfcAAAABC/32AAAA==", "AAAAr/8gAAAAAHD/gCAAAAAA73AAAAAAAAD/QDAQAAAAEP////9AAAAA379AYL8AAACf/1Cf7wAAACCv/7+AAA==", "ABC//1AAAAAAr///zwAAAABwYFDfIAAAAAAAAL8wAAAAAABAzwAAAAAAEM9QAAAAAACf/5+AQAAAAM/v/79wAA==", "ACDv///PIAAAEJ+A3/+AAAAAAAD/7xAAAAAAAP+AAAAAAAAA398AAAAAAACv/xAAACDfz///MAAAIO//31AAAA==", "AAAAYL8AAAAAAADPzwAAAAAAcP8gAAAAAACfvwAgAAAAAM/f/98AAAAAr//fz2AAAABQz4//UAAAAABg778QAA==", "AAAgv0AAAAAAEL///zAAAABw/2BAzwAAAID/YADPUAAAEP9QAHCPAAAA/4AAgL8AAADP39//nwAAAEDf73AAAA==", "AABQr88wAAAAAP/P748AAABA/wDPzwAAABCv/+/vMAAAAAAAAL9wAAAAAAAAYL8AAABgQCCPrwAAAGDP//9gAA==", "AAAQcL8wAAAAQP+/v58AAADfjwCvgAAAAHBQAO9AAAAAAAAg33AAAAAAAAAgz48AAABQn0AA31AAABCP7///gA==", "AACf358QAAAAQN9gz3AAAABgvwBwcAAAABD/n+8QAAAAAFD/7zAAAAAAz2Bg71AAADDvAEC/cAAAAL//74AAAA==", "AABg//9wAAAAgP/Pn/8AAABgjwBg7wAAAAAAAM+PAAAAAABg/xAAAAAAEO+AMFAAAACA/6//jwAAAFD//3AAAA==", "AAAgz+8QAAAAEN/P70AAAABQ3yDvAAAAAGDfgM8AAAAAAHD/vxAAAAAAEO+fzxAAAABAz0DPYAAAAACv/98QAA==", "AAAAEHC/3xAAABDPgEDPAAAAn/+P768AABD/7+//MAAAAK+PMN8AAAAAAABQjwAAAAAAAHCAAAAAAAAAgGAAAA==", "ABCAgI/PgAAAIP///9+PAAAw/yAAAAAAAFD//+8QAAAAUJ+A71AAAAAAAADPcAAAAADvv/8gAAAAAK//jwAAAA==", "AAAwv78gAAAAAK+fcN8gAAAArxAAgEAAACDfIABQcAAAgI8AAGCAAAAwzwAAv3AAAADvYK+/AAAAAEDvrxAAAA==", "AAAQr++AAAAAAADv/4AAAAAAAM//nwAAAAAA//9gAAAAACD//2AAAAAAUP//UAAAAABQ/+8QAAAAACDv7zAAAA==", "AAAAUO/PEAAAACDf/98AAAAQz///vwAAAI//3/9gAAAAMFBg/0AAAAAAAID/IAAAAAAAj/8wAAAAAABA788QAA==", "AABQr0AQAAAAAO///68AAAAg/48gv0AAAGDPAABgYAAAMM8AAFCPAAAw/wAAYIAAAADPv4D/cAAAAEDPv58AAA==", "AAAgv4BwYCAAAI//7///UAAAz68An98AAACvMCDvQAAAAAAAr48AAAAAAID/QAAAAAAA778AAAAAAED/IAAAAA==", "AAAw/98QAAAAAK//YAAAAAAA748QAAAAADD/3/+/IAAAQP/fz6/fAAAA/1AwcP8wAACvv4D/nwAAACDf/78AAA==", "AABAz78QAAAAIO/f/88AAABg/0Bg/1AAAIDvEAC/gAAAgL8AAL+AAABQzwAQz4AAABDvn7//MAAAAGD/z0AAAA==", "AACvnwAAAAAAAM/vAAAAAAAAv/9QAAAAABDv/1AAAAAAADDPnwAAAAAAAJ/fAAAAAABQr/+PUBAAAL//////vw==", "AABQ/+8QAAAAEO+Pn78AAAAw/xAA/0AAAGD/AACvYAAAMP8QAK+AAABA/0Aw70AAABDPz8/fEAAAAEDP3xAAAA==", "AAAAML+fAAAAABDfYO8AAAAAAP9gnwAAAAAA3/8gAAAAADDf7zAAAAAQ/0CPjwAAAABAz0BwgAAAAAAwn6/vIA==", "AABA7///UAAAAGCPr/+vAAAAAAAw/1AAAAAAMN//nwAAAHD//68wAAAAgO/PAAAAAABQ/3AAAAAAAHDfIAAAAA==", "AACAz99QAAAAUM9Ar48AAABAzxC/3wAAAACA36+/QAAAAAAAAHCAAAAAAAAAQIAAAAAgIACvcAAAAID//88gAA==", "ACDv///PIAAAcP/PgIAwAABA/0AAAAAAAAD/rwAAAAAAAL//MAAAAAAAIM+vAAAAADCA74AAAAAAIO/vEAAAAA==", "AABA79+/rwAAAHDvz/+fAAAAn3Bg/yAAAABwEL+/AAAAAFCA/78QAABA////3yAAAAAA748QAAAAAFDvIAAAAA==", "AAAQ/68AAAAAAADv/xAAAAAAAO/fAAAAAAAg/98AAAAAABD/7wAAAAAAAN/PAAAAAAAAz58AAAAAAAC/rwAAAA==", "AABwv89AAAAAAP9gYCAAAABAz3CAIAAAAHD/n5/fEAAAICAAAJ9gAAAAAAAAgIAAAACvEACfgAAAAIDv7+8gAA==", "AAC/j78QAAAAAN///4AAAAAw/48w7yAAAED/EAD/UAAAUL8AAP9QAAAw3xBA/0AAAADvv9/fAAAAAHC/vyAAAA==", "ABCPv///QAAAEK+AcP9AAAAAAACAzwAAAABQr+/vjwAAAP/vz1AgAAAAIP9QAAAAAACP3xAAAAAAAN+fAAAAAA==", "AAAQr++AAAAAAL/fn/9QAAAA/3DP/0AAAACP78//QAAAAAAAEO9AAAAAAAAA/0AAAID/34//QAAAACCf7+8gAA==", "AAAwz48QAAAAAM/f788AAAAg3xAgz0AAAECAAABQgAAAQIAAAECAAABAnwAAUIAAAADfr5/fUAAAAEC/z48AAA==", "AAAgz4AAAAAAAGD//2AAAAAAUO/PrwAAAAAAcP/vAAAAAAAAAN8wAAAAAAAAcK8AAAAAMEBA/yAAACDvz9/PIA==", "AABAr+8gAAAAIP+PgI8AAABA7wBQ/zAAAACvr/+PAAAAAED/7xAAAAAAz49gvxAAAADvMACPUAAAAFDPz79QAA==", "AAAQz98wAAAAAID/zyAAAAAg//8wAAAAADD/vxAAAAAAUP/fUAAAAAAw/////2AAABDf////vwAAADC/799wAA==", "AAAwz2AAAAAAAN+v74AAAAAA7xDf/xAAAACvz7/PUAAAADCAEICfAAAAAAAAj2AAAACPQDD/IAAAAEDf33AAAA==", "AABQ7//fEAAAAK/Pj/9QAAAAAABQ/yAAAAAAAI+vAAAAAHDP778QAAAAcN/fv0AAAAAA3zAAAAAAAHCfAAAAAA==", "AAAgv48AAAAAAK/vv1AAAAAA71AA3wAAACDvEACPcAAAQJ8AAHCAAAAAvwAAgJ8AACDvUJ//EAAAAFDfv0AAAA==", "AAAAYP9AAAAAABDP7xAAAAAQr/9QAAAAAID/nwCfYAAAv/+Aj/+/AAAg7////3AAAAAAQP+vAAAAAABw/zAAAA==", "AAAAj98QAAAAACD/gAAAAAAAv98QAAAAAFD/QCAQAAAAv88Q34AQABD/////7zAAAFCAr+8QAAAAAACf/zAAAA==", "AABAn89gAAAAEP/fv/8wAABA/2Aw/0AAAAC/////UAAAAABAQP+AAAAAAAAA71AAAABQcHD/QAAAACDf748AAA==", "AAAAAHDfcAAAAAAw//+PAAAAYO///2AAAFD/////IAAAQICA//8AAAAAADD//zAAAAAAEM//AAAAAAAAgO8AAA==", "AAAQ389AAAAAMO+/r+8AAACArxBwzwAAABDP3/8QAAAAAADfz98gAAAAIL8Aj4AAAAAwz0C/YAAAAACP388QAA==", "ADDvz7+AEAAAQP/fv78gAAAA/0AAAAAAAAC/jwAAAAAAAHD/MAAAAAAAAN+AAAAAAABQ758AAAAAIO//IAAAAA==", "AADPn4CAcAAAQP/////vIAAAn/9QAAAAAAAAz78AAAAAAABg7wAAAAAAAIDvAAAAABBgn78AAAAAEM//UAAAAA==", "ABC////vAAAAcP+PQDAAAACf7xAAAAAAAK/vgHAQAAAAIM///+9QAAAAAAAAz98AAAAgcM//jwAAAN//v1AAAA==", "ACDv/3AAAAAAn++f/yAAAACPr1D/AAAAAAAAv68AAAAAAFD/IAAAAAAw74AAAAAAAIDvUFCAMAAAMO////+fAA==", "AAAw70AAAAAAAADvrwAAAAAAAO//IAAAAAAA3/+AAAAAAABwz98AAAAAAABA/0AAAAAwj8//v1AAADDv/////w==", "ACDv/1AAAAAAAECvjwAAAAAAAM9wIBAAABCA/9//nwAAn//vcBAAAAAA34AAAAAAABD/MAAAAAAAIO8QAAAAAA==", "ACDv/78AAAAAgK+A/wAAAAAwEHDPAAAAAAAAn4AAAAAAAADvUAAAAAAAcO8AAAAAAADfr2BQIAAAEP////+PAA==", "AAAAv3AAAAAAAADf7wAAAAAAAN//EAAAAAAA7/8gAAAAAADP/xAAAAAAAN//EAAAAAAA3/8QAAAAAABg/yAAAA==", "AABgv8+/AAAAAN+/cP8QAAAAYGDfjwAAAAAA368QAAAAAABQ/1AAAAAAAABg3xAAAACfgDD/EAAAAEDf/78AAA==", "AAAQgO+vMAAAAK+/j9+vAAAg3wAAz2AAAHDvgL+PAAAAAGDP/4AAAAAAAM+P70AAAAAA/4DfMAAAAACv74AAAA==", "AACv//+vAAAAAJ//cCAAAAAQ/48AAAAAAADP/4AAAAAAAABA70AAAAAAAADfgAAAAAAwgP9AAAAAAN//jwAAAA==", "AEDv////QAAAQP/vj3AQAAAA798QAAAAAABQ/48AAAAAAADf/wAAAAAAAI//UAAAADCfz/9AAAAAUP//vwAAAA==", "AAAwz+8QAAAAQO/f758AAADPzyDPjwAAAN+fAO+PAAAAEBAg/0AAAAAAAI/vEAAAAAAg7////2AAACDv/5+/QA==", "AAAA778QAAAAAFD//2AAAAAAIP//MAAAAAAg//8QAAAAAGD/zwAAAAAAEP//IAAAAAAw/+8wAAAAAADv/xAAAA==", "AAAAYI8AAAAAACDvgAAAAAAAQP9QAAAAAACPv3C/IAAAAI//789gAAAAz98gz2AAAADf78//QAAAABCf/58AAA==", "AAAAv0AAAAAAAGDvIAAAAAAA/1AAQEAAAEDvIDDvjwAAIO////9AAAAAIID/gAAAAAAAgO8AAAAAAACvjwAAAA==", "AABQ7+8gAAAAMP+P/1AAAABQjxD/EAAAAAAAn48AAAAAABD/MAAAAAAAj48AAAAAAACv33BgIAAAAGD//+8gAA==", "AAAAv3AAAAAAAGDvEBAAAAAQ34CfgAAAAGDvAM+/YAAA3++///+PAACf/+//gBAAAAAAn/8QAAAAAAC/jwAAAA==", "AAAQj+8QAAAAAI/fQAAAAAAA/zAAAAAAAGDPAAAAAAAAQN+//88wAAAg789AMM8AAACPgCBA/xAAAACPv7+AAA==", "AACfvwAAAAAAAID/EAAAAAAAj/8QAAAAAAC//1AAAAAAAM//nwAAAAAAEJ/vAAAAAABwv/+/v0AAAHD/////rw==", "AAAwz69wAAAAAK////8gAABA/48Q3yAAAED/AAD/IAAAAP8QAL+AAAAA748Az2AAAACP34/fEAAAACC/z0AAAA==", "AACA/4AAAAAAAJ///zAAAAAAIEDfQAAAAAAAgN8AAAAAAFD/gAAAAAAg799wYDAAAFD/7//vMAAAAJ/PgCAAAA==", "AABgv68AAAAAAL//7wAAAAAAz//fIAAAABDv/68gAAAAAI//nwAAAAAAj//fUAAAAACf///fAAAAAECvv4AAAA==", "AAAQn48AAAAAAI/vQAAAAAAQ/1AAAAAAAED/EEDfQAAAQP+/3/9QAAAAEHD/jwAAAAAAIP9AAAAAAACfzwAAAA==", "ACCv/88gAAAAr++//3AAAABwYADfgAAAAAAAEP9gAAAAAACfnwAAAAAAcP9AMDAAADDv/+/vrwAAIM+/jwAAAA==", "AAAQj88QAAAAEL/fUAAAAAAg/1AAAAAAAFDvADAAAAAAMP///+8wAAAg/68Qj68AAACvz2C/rwAAAABg/+8gAA==", "AAAw34BgQAAAAK/////vEAAw/zAg72AAAFCAAI/fAAAAAHCP789AAAAAn///7zAAAAAAz3AAAAAAAGDvIAAAAA==", "AAAAj4AAAAAAABD/IAAAAAAAYN8AAAAAAACPrwAwAAAAAM+Az8+fAAAAv/+AAM8QAABg/1CPzwAAAACA799AAA==", "AABQ/+9QAAAAAIDPj+8AAAAAAEAA71AAAAAAAAC/YAAAAAAAAO9AAAAAr5+f7wAAAAD////vz0AAAHD/z5+AMA==", "AABg71AAAAAAEO/v7zAAAAAg/2Cv3wAAAADv3+//EAAAADCAn/9QAAAAAAAw/4AAAAAAQJ//gAAAAHC/z78QAA==", "AACf//+fAAAAQP9gEP8gAAAAnwAQ/zAAAAAAAFDvAAAAAAAAr68AAAAAACDvQAAAAAAgz/+/gAAAAM/vr4DfcA==", "AAAAr4AAAAAAACD/UAAAAAAAv59AnwAAAGDvIO+AAAAAn79A/3BgAACf/+//32AAADCA/48AAAAAAADfrwAAAA==", "AACv/78gAAAAcP9gn88AAAAAIAAw/wAAAAAAML+PAAAAAACf/78AAAAAMAAw73AAADD/cGDfgAAAEI/v/78QAA==", "AAAAj/9gAAAAAEDvYO8AAAAAgK+PrwAAAACA/98gAAAAAK//zwAAAABg3yC/jwAAAFD/r1DPQAAAADCAz/+PAA==", "AACf/+8AAAAAQN+A/xAAAAAAEED/ACAAAAAwr///zwAAAL//r3AgAAAAYP8AAAAAAABw7wAAAAAAAL+vAAAAAA==", "AAAAcN//YAAAAJ//v++PAAAAgDAg/3AAAAAQgM//3wAAIM///78QAABgv2D/MAAAAAAAUM8AAAAAAACPYAAAAA==", "AACA/68AAAAAIO+A/3AAAAAwzxDfzwAAAACf////MAAAAAAgUO9AAAAAAAAAv2AAAABQYFDvQAAAAGDv/78QAA==", "ABCfj69QAAAQ34AQIK8AAADfMACvUAAAACC/v68AAAAAACDv30AAAAAAr1AQvyAAAADPAADfIAAAAI/P/48AAA==", "AACfz4AQAAAAAP///4AAAAAAYBCvjwAAAAAAAM+AAAAAAABQ////AAAAgP////8AAID//////wAAIJ+vcCAAAA==", "AAAw/78QAAD//////wAAAP////+/AAAA/////58AAAAAAP//EAAAAAAA//8AAAAAAACf/xAAAAAAACDPjwAAAA==", "AABg7+8QAAAAQP/P/0AAAACfryD/IAAAAP///98AAAAA////YAAAAAD///8Qv48AAACv79//jwAAAID/v1AAAA==", "AAAAn/9wAAAAAP///98gAAAA/////wAAAAD////fEAAAAID//3AAAAAQ72CAvwAAABDPUL+PAAAAABCv72AAAA==", "ADDP/88AAAAAj8+A/1AQAAAAgN///1AAAAD///8gAAAAAP///wAAAAAA////AAAAAADvjwAAAAAAIO8wAAAAAA==", "AAAAcL8AAAAAADDfYAAAAAAAr4AA////AED/MBD///8AgP+/3////wAgv5//UAAAAAAAYP8AAAAAAABgzwAAAA==", "AADPz4AgAAAAUP///78AAAAQ778AAAAAAAC/z3AQAAAAAID//78AAP///0CP/zAA////UN/vEAD//////2AAAA==", "AAAgz68AAAAAAK/fr48AAAAA////vwAAAAD///+/AAAAAP///3AAAAAAAHD/AAAAAAAQv79AQBAAABDv////cA==", "AAAAIP/vMAAAAACA//9AAAAAj///3wAAAHD/////AAAAAAD///8AAAAAAP///wAAAAAAQP//cAAAAAAAz/9wAA==", "AAAQz98QAAAAEK//n78AAP///+8AzzAA////UACAjwD///8AAICvAABA7wAQ348AAADfgL//MAAAADDv70AAAA==", "AAAAEHD///8AADDvcP///wAg/59Q////AEDv/7//UAAAAFAwEO8AAAAAAABAvwAAAAAAAHCfAAAAAAAAcL8AAA==", "AAD////fEAAAAP///59AAAAw////gGAAADDvjyDvEAAAACCf/88AAAAAAAC/30AAAAAAIL+PMAAAAAAg/98AAA==", "AACA/2AwAAAAIM9Qn98AAABA3xCP////AAC/z4D///8AAAAwAP///wAAAAAAvyAAAABAEADfEAAAAGDv/58AAA==", "AAAwv///MAAAIP//r/9AAACA3yCf/xAAAFBQMP9AAAAAAACvvwAAAAAAMP9Q////AAAw/7////8AAADv/////w==", "AACvn4C/EAAAAP///58AAABQ////AAAAAHD///+AAAAAAEBAgP9wAAAAAAAAj4AAAACPQHD/UAAAAN//33AAAA==", "AACA7/9gAAAAAM/Pz88AAAAAIGD/jwAAAAAAMP8gAAAAAAAA////AAAAAAD///8AAABwQP///wAAAHD//4AAAA==", "AADv///vjwAAYP/Pv7+vIAAw798gAAAAAAD///8AAAAAAP///wAAAAAA////AAAAABDf358AAAAAAM//MAAAAA==", "AAAQv3AAAAAAAIDfEAAAAAAA73AAMFAAAFD/AEDvQAAAUP////8gAAAAr////wAAAAAA////AAAAAADPnwAAAA==", "ACDv71AAAAAAUP//rwAAAACP7/+/AAAAAABA/2AAAAAAAID/IP///wAQ388A////AED/39////8AIN//z48QAA==", "AP///yAAAAAA////IAAAAAD///8AAAAAADD/cAAAAAAAUP//gBAAAAAw76/fzyAAAACf/5//7wAAABCf379wAA==", "AAAAYL9gAAAAABDv3xAAAAAAn/////8AABDP/////wAAMP//////AAAA/////3AAAACP////vwAAAABgr79QAA==", "AAAAAM//YAAAADCv//9QAABQ/////0AAAECfj///QAAAAAAAz/9AAAAAAP///0AAAAAA////cAAAAAD///9QAA==", "AACf//+AAAAAUP9gcN8AAAAw/zDPjwAAAADP748AAAAAAJ//EAAAAAAA/////wAAABDv////AAAAAFD///8AAA==", "AAAgn5+vAAAAAP////8AAAAA////7wAAAAD/////EAAAAAAAAM8wAAAAAAAAvzAAAJ+PUADvEAAAACDf/88AAA==", "AAAAgO8QAAAAAAC/3wAAAAAAMP9wAAAAAABg/yAAAAAAAHD//89QAAAA7/+P////AAAw34////8AAABw7////w==", "AAAgz0AAAAAAAIDfrwAAAAAAn2DfUCAAAAAg3////wAAABDv////AAAAr8////8AAADPgJ9AAAAAACCv/3AAAA==", "AABQv48QAAAAAP+P748AAAAg3xCfvwAAAACP3/+vAAAAADDv/48AAAAAv5////8AAACvgP///wAAAECf////AA==", "////3/+fAAD///9gv88AAP///wDPz1AAACC/7//v3wAAIL//cAAQAAAAMO8AAAAAAACA3wAAAAAAAI+vAAAAAA==", "AAAAn2AAAAAAAED/IDAAAAAAz4Bw3wAAAHDvAM////8A3+/f/////wDP/+//////AAAQj98AAAAAAADfnwAAAA==", "AABAv//fcAAAIP9gAHC/AP///wAwzzAA////EP9gAAD///8Aj78AAAAAIAAAz1AAADD/cBC/QAAAADC//+8gAA==", "AAAAv/8QAAAAAED/rwAAAAAAv////wAAAADv////AAAAMP////9wAAAg758AQO8wAACAv0Bg/1AAABCv///PAA==", "ABD///+fAAAAv/////8gAAAw////3xAAAAAAAI+vAAAAAAAAIP8QAAAAAAAAgL8AAABAACCvjwAAAL//379AAA==", "ABDf/+9AAAAAQP+Pr+8wAABg/xCA/yAA////n+//YAD///+vgO9QAP///wAQ/1AAAAAwMK/vEAAAAM//30AAAA==", "AAAgvxD///8AAGDPAP///wAAz0AA////AAD/EAAAAAAAUP///58QAAAg72AQn4AAAACfnwCPjwAAACC//+8QAA==", "AAAAQM//7yAAACDvz8//YP///3AAMP9A////QECA3wD///////9gAAAAr4+fvwAAAAAAAM8wAAAAAABAnwAAAA==", "AAAg////AAAAAK////8AAAAg/////yAAAED/vwCvUAAAQP9gAL9wAAAA7xAQ748AAACfj5/vIAAAACDP/4AAAA==", "AAAQcGCvEAAAAM+v7/9wAAAAz2Cv/0AAAAAw7/9wAAAA////33AAAAD///8QzwAAAP///zC/AAAAABCfgBAAAA==", "AAAAgP///wAAADDv////AAAAv5////8AAED/QK+vAAAAr+8g358QAADP////zxAAAABAv78AAAAAAACvjwAAAA==", "ABBw3/+/EAAAcP+PYK8QAACvv0AQAAAAAL///+9gAAAAMI9Ar78AAAAA/////wAAAAD////PAAAAAP///zAAAA==", "AAAAUL8AIBAAABDfQBDfgAAAn4AAj+8QABDvECDvgAAAUP9g////AABQ//////8AAAAQAP///wAAAABQrwAAAA==", "AACf3wAAAAAAEP9wEHAAAAAA73C//yAAAAD///9AAAAAAP///wAAAAAA////AAAAAABQ/yAAAAAAAK+/AAAAAA==", "AABwz98QAAAAcO+Pz3AAAABQ7zCAgAAAAAAQAL9QAAAAAAAQ3wAAAP///59gAAAA////71BAQAD//////8//YA==", "AABQ//8wAAAAAI//cAAAAAAAv+8gAAAAABDv/+9AAAAAAI/P/48AAAAAAP///wAAAABQ////AAAAADD///8AAA==", "AAAwv++vIAAAAK/PcM+AAABw7xBQ7zAA//////9QAAD////P7+8gAP///88An1AAAABAr0CvYAAAACDP/78AAA==", "ABC/z88AAAAAQK9gMAAAAABwr4BgEAAAAFDvv8+/AAAAAAAAAM9AAAAA////gIAAACD////vMAAAEP///1AAAA==", "AACfj9+fAAAAIO/vQN8gAP///1CPvwAA/////98gAAD///+/nwAAAAAA7xC/AAAAADC/IM8AAAAAAI//cAAAAA==", "AACA368gAAAAYP9wYM8QAACArwAAn0AAAHCAAP///wAAgEAA////AAAgnwD///8AAADfMEDvMAAAAFD//3AAAA==", "AAAQ768QAAAAACD//3AAAAAAYP//UAAAAACA//9AAAAA////zwAAAAD////PAAAAAP///68AAAAAABDf/zAAAA==", "AAAg////AAAAAL////8AAAAQ/////wAAACDfAAAAAAAAIP9Qn59AAAAA/9+AYM8AAADPjyBA3wAAADCf//9wAA==", "AABw/1AAAAAAAP//rwAAAAAAn8//EAAAAAAAz////wAAAADf////AAAAv/////8QAADf/////0AAAHD/73AwAA==", "AAAwz+9QAAAAEO/Pn+8AAAAg/zAgjwAAAAC/z99wAAAAAJ//jwAAAAAQ/0CP////AADvMAD///8AADC/7////w==", "AABQvxBgAAAAAK+/AP8gAAAA/1AAv0AAADDvAACAQAAAcL////9wAAAg7////1AAAAD/////MAAAAEC/vzAAAA==", "AABQv//vAAAAMP////8AAABA////cAAAAFD///8AAAAAgO9gAAAAAABAgN8AAAAAADCf/xAAAAAAAGDvIAAAAA==", "AAAw////UAAAAJ////9gAAAg7////xAAAAAgMJ/PIAAAADD///+fAAAAAL/PcBAAAAAQ/2AAAAAAAFDfIAAAAA==", "AAAAYO9gAAAA////gK8AAAD///+PnwAAAP///+8wAAAAAABQ3zAAAAAAMABQzyAAAACPv1CfcAAAAABgv+9QAA==", "AAAgv9+AAAAAAM/P778AAABQ7yCfYAAAAP///98QAAAA////788QAAD///8w33AAAABgzxD/QAAAABC//68AAA==", "AABw7////wAAj///////AADf//////8AAK/fz/8gAAAAAABg/xAAAAAAAL+/AAAAAABg/3AAAAAAAJ/PAAAAAA==", "AAAAIM8AAAAAAACA7wAAAAAAUP9QIAAAAADvvxD/QAAAQP////+AAAAAn////0AAAAAA////AAAAAAAAz2AAAA==", "AADv/79QAAAAEP/vr3AAAABA/48AAAAAAID/////AAAAcP////8wAAAAEP///0AAAAAQn/+fAAAAAM/vUAAAAA==", "AAAAv+9AAAAAAHD/jyAAAAAAv98AAAAAAAD///8AAAAAMP///4AAAAAQ////v4AAAAC/v0DPvwAAABCv//9AAA==", "ABCAv///cAAAcP////9QAABAz////wAAAED/////AAAAIIBg72AAAAAAcACPvwAAAAD/r8+/AAAAAFDPv1AAAA==", "AAD///+AEAAAAP////8QAAAg////rwAAAHDvYN//zwAAMP//748gAAAAMK+PAAAAAAAAv0AAAAAAAAC/AAAAAA==", "ABDP////vxAAYP/fv69QAAAg7+9QAAAAAACA3+8QAAAA/////2AAAAD/////UAAAAP////9AAAAAAO//nwAAAA==", "AABA/+9wAAAAAGD//2AAAAAAUP//QAAAAABw////AAAAAK////8AAAAAYP///wAAAABg//9QAAAAACC//zAAAA==", "AAAAz+9AAAD/////j0AAAP///98AAAAA////cAAAAAAAUP//30AAAAAg749w71AAAACvz0C/zwAAABDP//+fAA==", "AAAAzxAAAAAAAJ+/EAAAAAAA3zAAAAAAAEDfAEBQAAAAcP9AcN9wAAAw////QL8AAAD///+fvwAAAP///98gAA==", "AADP//9QAAAAUO9gr88AAAAAICDPgAAAAABA/+8gAAAAADCv7////wAAAAAg////AAAwQI////8AAO///58AAA==", "AAD///9gAAAAAP////8AAAAA////3wAAAABA7+9QAAAAAFD/3xAAAAAA32CAjwAAAADPcBCvUAAAADCv7/+/AA==", "AADPnxAAAAAAUP/fcAAAAABA/4DfAAAAACDf////AAAAABD///8QAAAAAP///2AAAABQgFCP3wAAAM/P7//PAA==", "AAAA/2AAAAAAAK///68AAABA/6/P3wAAAHC/EDDPAAAAQP////8AAAAg/////xAAAAD////fAAAAABCv7zAAAA==", "AP/////fIAAA////MP9QAAD///8A72AAAGC/gM//UAAAAI+/QJ+AAAAAMAAAr1AAAAD/31DvQAAAADC//68QAA==", "AAAQzxAAAAAAAHDvEAAAAAAQ////AAAAAAD///8QAAAAEP///+9QAAAQ/99AML8AAABwcACPvwAAAACv/48gAA==", "AABQ7yAAAAAAABD/gAAAAAAAAN+/AAAAAAAg/////wAAACCP////AAAAAAD///8AAAAgn7//QEAAAEDv/////w==", "AAAAj88wAAAAAIDvv////wAAv4AA////ADDPAAD///8AgI8AAM9wAAAg/0Bw/1AAAADf3//vEAAAABC/30AAAA==", "AAAAcP+/AAAAAHD//78AAAAw////gAAAAHD///+AAAAAAACv////AAAAAHD///8AAAAAYP///wAAAABg7+8gAA==", "AAAAr4AAAAAAAGDvIAAAAAD///8AQHAAAP///yDPjwAA////798QAABg/4//UAAAAAAAYN8QAAAAAADfcAAAAA==", "AAAgj9+/AAAAAP///+8QAABA////YGAAAFD///8wgAAAQHAAABCAAAAwvxAAUIAAAACfv3DfMAAAABC//4AAAA==", "AAAAQO+/AAAA/////68AAAD/////QAAAAP////8gAAAAAABw/wAAAAAAAI//IAAAAAAAj/8wAAAAAABQ/1AAAA==", "AAAgn/9AAAAQn///70AAAAD//58QAAAAAO///3AAAAAAUK9Q7yAAAAD///+vjwAAAP////+PAAAA////7yAAAA==", "ACDP759AAAAAAFBAz+8gAAAAAACv/0AAAAAAAP////8AAAAAz////wAAAACA////ABBggN+/AAAAIL/frxAAAA==", "AAAQYL//jwAAAJ/vn8+PAAAAIBAA3yAAAAAAYL//7wAAAFD///9wAAAAMP///wAAAAAA////AAAAAACvIAAAAA==", "AAAAv98QAAAAAFD/vwAAAAAA////AAAAAAD///8gAAAAEP///+8gAAAA73AQv58AAACf30DvvwAAAACv/+9QAA==", "AAC//7////8AMP+//////wAQgED/////AAAAcP8QAAAAAACfvwAAAAAAQP8gAAAAAACv74CAIAAAAL///78QAA==", "////QN/fUAD///+P//9wAP///+//7zAAAEDv//+/AAAAUP///78AAAAAAL//zxAAAAAAgP//cAAAAABA3+9gAA==", "AAAAUP+PAAAAABDP/2AAAAAAz///QAAAAP////9QAAAA/////3AAAAD/////gAAAAAAAj//PAAAAAABQ348AAA==", "AABw788QAAAAgM////8AAAAgEP///wAAAAAg////AAAAAAAQv78QAAAAAAAQn4AAAACAQFDfjwAAAHDPz48AAA==", "AAAAv58AAAAAAADf/yAAAP///8//AAAA////r/8wAAD///+f/zAAAAAAAK//IAAAAAAA3/8gAAAAAACv3wAAAA==", "ABCP34AAAAAAgK8wcK8QAAC/cAAw/0AAADDPv9/fcAAAAAAAAGBwAP///wAAj48A////ACD/EAD////P31AAAA==", "AAAAQL/vQAAAADDfQP///wAAQL9Q////AABA/9////8AEL/vzwAAAABgzxC/YAAAAACfz1DfEAAAAABAn/+AAA==", "AAC/////cAAAEN/vYEAQAACA/yD///8AAI//v////wAAEICA////AAAAAAAAz78AAACAIGD/UAAAEK///4AAAA==", "AAD////fUAAAAP////9QAAAA/////xAAAFD/////AAAAEFCv//8AAAAAAFD//wAAAAAAAK//AAAAAAAAr58AAA==", "AAAw358wAAAAAJ/fz+8QAAAAv0BA/0AAAAD/////gAAAAP///9+AAAAA////j68AAAD/n4C/vwAAAHC/399gAA==", "AAAwn///QAAAAAAAEN9wAAAA////70AAAAD////vUAAAEP///49AAAAAIK/PAAAAAAAQ/1AAAAAAADC/AAAAAA==", "AED/7yAAAAAAr+/vcAAAAACPn2DfAAAAAAAAcO8AAAAAAADPnwAAAAAAEP9w////ABC//+////8AQP///////w==", "/////68AAAD//////1AAAP//////QAAAAACf/88AAAAAAM//vwAAAAAAn/+PAAAAAACP/58AAAAAAEDv/zAAAA==", "AAAwv78QAAAAMM9g////AACPUAD///8AAHCPQP///wAAAI+vMJ8gAAAAAAAArzAAAACfIBDPAAAAADDP/0AAAA==", "//////+/AAD////P//8wAP///3D/3wAAAAAAr/9AAAAAAAAg748AAAAAAACvzwAAAAAwcO/fAAAAAN///2AAAA==", "AAAAcM+fAAAAAJ/PUM8AAABwvwCAgAAAAP///+8QAAAA////z48AAAD///8Ar3AAAABQjxAgvwAAAACP7/+PAA==", "AABQv7+AEAAAAJ///+8AAAAAr///gAAAAED///9AAAAAMP//nwAAAAAA////MAAAAAD///8AAAAAAP///wAAAA==", "AABg788gAAAAEO+fr98AAAAg/zAQ/0AAAEC/ABDfQAAAQJ8AAO8wAABA////7zAAABD/////IAAAAP///1AAAA==", "AAAAcM+AAAAAACD/gO8AAAAAQL+ArwAAAAAg////AAAAAFD///8AAAAg/////wAAAACPvxDfYAAAAABg7++/AA==", "AABQ359wAAAAAP////8wAAAw/58g/3AAAHD/MP///wAAgP8Q////AABw/1D///8AACD/79/PAAAAAHDvzyAAAA==", "AAAAgO+PEAAAAK/fv++AAP///1Bg3yAA////3+8QAAD/////YAAAAABg/4/PAAAAACDP7/9AAAAAABCP7yAAAA==", "AAAA3+8QAAAAAGD/rwAAAAAAz+8gAAAAAAD/vwAAAAAAMP///////wAg/79A////AACf32D///8AABDP//+fAA==", "AABA74AAAAAAAO/f71AAAACA/1Aw3wAAAFCvAACfUAAAUI8AAICAAAAA////n4AAAAD/////EAAAAP///3AAAA==", "AAAAj88AYIAAAP///wDvjwAQ////cO8wAHD/////nwAAYL+f398gAAAAAADPnwAAAAAAYP8gAAAAAAC/rwAAAA==", "AAAAYK8AAAAAAADvnwAAAAAAcO8gAAAAAAD/YAAAAAAAMP9wUFAAAAAg/8////8AAACAz////zAAAABQ////IA==", "AAAQgP9wAAAAADD//78AAAAQ7///vwAAADC/7/+/AAAAAACA/58AAAAAAK////8AAAAAr////wAAAABQ////AA==", "AABAr++AAAAAAM//r89wAAAw/78AQIAAAGD/UABAgAD///8AAI9wAP///wAg7yAA////v9+fAAAAAEDf3xAAAA==", "AABgv8+PAAAAcN9gcP8wAABAYFDfYAAAAAAAv99AAAAAAAAAMN8gAAAA////j3AAAAD///+PgAAAAP///88gAA==", "AADPzxD///8AcP/Pv////wCAzxDv////AEDvz+/vnwAAAGCvMI/PAAAAAAAAUP8AABBwABCP7xAAEM////9gAA==", "AP////9wAAAA////UL8QAAD///8Q/0AAABC/v8//MAAAAABAgM8AAAAAAABAzwAAAACAMJ+fAAAAAGDv7zAAAA==", "AAC/j4+AEAAAIO+AgIAgAACAv4BQAAAAAP///9+PAAAA////EN8wAAD///8AYK8AABCAQFDfjwAAEK//v3AAAA==", "AAAAv////wAAAEDv////AAAA70D///8AABD/cBAAAAAAQP/f/88QAAAQ/wAQn68AAADfjxCAvwAAACCf//9QAA==", "AAAAUK8QAAAAAADf3yAAAAAAUP9QAAAAAACA7yAAAAAAAJ/PAAAAAAAA3/////8AAABg/////wAAAABg////AA==", "ACDv/////wAAMP/f////AABw/2D///8AADDf72AAAAAAABDPvwAAAAAAAID/AAAAAACP/68AAAAAMP/PEAAAAA==", "AACP//+fAAAAIP+Pr68AAAAA73C//zAAAP///+/vcAAA////AJ+fAAD///8Ar58AAACvIGD/YAAAAI///68QAA==", "AABw///fAAAAAP+/n+8QAAAAn0D/////AAAAj/////8AAAAAcP///wAAAAAA/3AAAACAQJ/vIAAAAL///2AAAA==", "AAAAj++PAAAAAIDvUL8gAAAA7+8wzzAAAACv////AAAAQP////8AAAAwv////wAAAAC/gJ+vAAAAAACPz0AAAA==", "AACf799AAAAAAEBgz/8gAAAAADD/jwAAAAAAEP9gAAAAAAD///8AAAAAAP///0AAABCP////cAAAAN+/768gAA==", "AACf/++AIAAAj/+/gI8wAADP////AAAAAHD///8AAAAAcP///0AAAAAAABD/UAAAAAAgv+8QAAAAAM//YAAAAA==", "AACP//9wAAAA////QO8gAAD///8g/2AAAP///8//nwAAABCfz/9gAAAAAAAw/3AAAAAAIM/fEAAAAK/v72AAAA==", "AAAgzwAAAAAAAL+/AAAAAAD///8AAAAAAP///3AgAAAA////z+8gAAAg7xAAcK8AAADPgFDPjwAAACDP/68QAA==", "AAAAQO9wAAAAADDvvwAAAAAQ378AIK8AAJ/fAP///wAAr++/////AABAn4D///8AAAAAIP9AAAAAAABg3wAAAA==", "ACCvz68gAAAAcL9Az4AAAABgz////wAAAAAw////UAAAAAD///+AAAAAAAAAMK8AAAAgABCPnwAAEO///98gAA==", "/////+9QAAD/////798AAP///xBw/0AAACBgj9//UAAAj////78QAAAAj+//QAAAAABg/68AAAAAACDvQAAAAA==", "AAAgz88QAAAAAI/PUAAAAP///1AAAAAA////IAAAAAD///+fj48gAAAA/6+Ar78AABDfrxBAzwAAADCv/+9AAA==", "AAAgcP///wAAAN+/////AAAAIAD///8AAAAAAADPYAAAUP////9QAAAgUHDP3yAAAAAAEO9QAAAAAACvjwAAAA==", "AAAg7////wAAAK/P////AAAA/2D///8AADD/cAAAAAAAQP//71AAAABA/1Awz3AAABDfjwCAzwAAACDP//+AAA==", "AAAgz++AAAAAAJ/fn6+AAAAA/xAA////ADDPAAD///8AQL8AAP///wBQvwAAnwAAAADvgHCfAAAAAEDf3xAAAA==", "AAAw////YAAAADD///8wAAAAAP///wAAAAAgj+//3wAAAHD/32AgAAAAAICAAAAAAAAg/yAAAAAAAFC/AAAAAA==", "AAAAgP8AAAAAADD/gAAAAAAQz78AQM8QAGD/j3DvnwAAj/////8gAAAAQP///wAAAAAA////AAAAAACvzwAAAA==", "AACPz2AAAAAAAN9wrzAAAABAcIBQgAAAAICf79+PAAAAAEBwj88QAAD///8AUK8AAP///yC/YAAA////33AAAA==", "AACP//+AAAAAUP/v3/8AAABAjzDPvwAAAAAAgO8QAAAA////cAAAAAD///8QQDAAAP///+//QAAAAI//71AAAA==", "AAAAEL////8AAACv7////wAAgP9g////AED/jxDvjwAAz+9gn/9gAAC//////xAAABBwQN/PAAAAAAAA348AAA==", "AAAA71AAAAAAAED///8AAAAQz////yAAAFD/////jwAAcP/f//9wAAAQr+//nwAAAAAAz/8wAAAAABD/rwAAAA==", "AAAQr7/P31AAAHD/////YAAAn/////8gABD/////gAAAIK8AQN8QAAAAABDfQAAAAAAAgN8AAAAAAADvcAAAAA==", "AAAAAK9QAAAAAACA/yAAAAAAQO//MAAAAAC/YP8wAAAAUO8A71AwAABg////r0AAAAD///8AAAAAAP///yAAAA==", "AACvn79AAAAAAL/Pj/8QAAAAcM+v/wAAAAAQ/99AAAAAAP///wAAAAAA////cAAAAED////PAAAAEK/fv0AAAA==", "AACPv99gAAAAAP////8AAAAg7////wAAAIDv////EAAAEIBgIL9wAAAAAAAAr3AAAAAAAIDvIAAAAL/fjyAAAA==", "AACf/88wAAAAAGDvv88AAAAAAGBg/wAAAAAAADD/EAAAAAAAcN8AAP///wDPgAAA////7//PgFD/////n4+/7w==", "AACfzxAAAAAAAHD/UAAAAAAAYP9gAAAAAABg/88AAAAAAABg/yAAAAAAADD///8AAABwr////0AAAGDv////7w==", "AAAw/48AAAAAQO/v/3AAAACA/zBwvwAAAGD/MADPMAD///8AAL+AAP///yAAj68A////35/vvwAAADCf/98wAA==", "AAAQ788gAAD///+A358AAP///wBQ7xAA////ACD/UAAAAAAAgO8QAAAAMJ/PzwAAAACA//+/QAAAABDP79//cA==", "AAAA378gAAAAAABggN8QAAAA////z1AAACD///+AgAAAUP///4BwAABgzwAAr0AAAAC/n2DfAAAAABCv33AAAA==", "AP/////PUAAA//////+/AAD///9Q/0AAAAAAn+9QAAAAAI//MAAAAAAAz//PEAAAAAAAUP/fAAAAAFDfr2AAAA==", "AAAQgJ+AMAAAABD///+AAAAAAN///zAAAAAQ///vAAAAAP///58AAAAA////QAAAAAD///8AAAAAABCAgBAAAA==", "AAAgn+9wAAAAAN/vcO8gAABA/zAAr0AAAEDfAABwgAAAcL8AAGBwAP///xAAv0AA////v5//EAD////fz1AAAA==", "AABwn/+PAAAAAO//z+8QAAAAn8+f/yAAAAAQ//+vAAAAAID//1AAAAD////fcAAAAP////9AAAAA////3wAAAA==", "AACP34AQAAD////f378AAP///58A70AA/////7/fIAAAAED//yAAAAAw/4CfzyAAABDvEDD/gAAAAK//768QAA=="], "lab": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "pos": [[4, 4], [1, 0], [3, 1], [1, 2], [3, 2], [2, 5], [5, 0], [2, 2], [3, 3], [2, 0], [0, 5], [0, 2], [2, 5], [5, 5], [1, 2], [4, 4], [3, 2], [4, 3], [4, 5], [0, 1], [2, 4], [5, 3], [5, 3], [1, 2], [5, 5], [3, 4], [5, 4], [0, 0], [3, 5], [2, 0], [2, 3], [0, 2], [3, 0], [0, 5], [2, 0], [0, 3], [4, 1], [0, 4], [5, 2], [4, 4], [3, 2], [5, 0], [5, 3], [3, 0], [5, 2], [2, 0], [3, 4], [4, 1], [0, 3], [3, 4], [5, 5], [4, 3], [1, 2], [0, 3], [1, 1], [3, 1], [0, 4], [4, 3], [3, 3], [3, 2], [1, 3], [0, 2], [4, 1], [3, 3], [1, 0], [5, 2], [4, 5], [0, 2], [3, 3], [4, 2], [0, 1], [2, 2], [3, 4], [1, 5], [4, 4], [2, 1], [1, 2], [1, 1], [5, 1], [3, 5], [4, 3], [2, 2], [0, 5], [0, 0], [3, 1], [1, 3], [2, 0], [5, 0], [1, 5], [2, 4], [0, 2], [3, 2], [2, 2], [5, 5], [0, 0], [1, 4], [0, 0], [3, 1], [5, 2], [5, 2], [3, 3], [3, 4], [2, 0], [4, 5], [5, 2], [1, 2], [5, 4], [5, 4], [4, 0], [5, 2], [0, 5], [0, 1], [3, 1], [0, 4], [5, 4], [0, 4], [3, 1], [2, 5], [3, 3], [4, 3], [2, 2], [1, 1], [2, 1], [3, 4], [2, 3], [0, 0], [2, 0], [0, 4], [0, 4], [2, 5], [0, 3], [4, 3], [5, 1], [4, 1], [0, 5], [1, 3], [1, 3], [5, 2], [4, 2], [1, 3], [5, 0], [5, 4], [4, 0], [1, 0], [2, 2], [0, 1], [4, 2], [5, 0], [5, 1], [1, 0]], "auroc": 0.9343111111111111};
+const E = loadMLP(DATA.E), D = loadMLP(DATA.D);
+const IMG = DATA.test.map(u8img), LAB = DATA.lab;
+const rec = x => decode(D, encode(E, x)), errOf = x => { const r = rec(x); return r.reduce((a, v, i) => a + (v - x[i]) ** 2, 0) / 64; };
+const ERR = IMG.map(errOf);
+const mx = Math.max(...ERR) * 1.02;
+let th = 0.03, cur = 160, custom = null;
+const sT = slider({ label: 'Seuil d’anomalie', min: 0, max: mx, step: mx / 400, value: th, fmtv: v => fmt(v, 4), onInput: v => { th = v; render(); } });
+$('#thr').append(sT);
+// ROC et AUROC
+const order = ERR.map((e, i) => i).sort((a, b) => ERR[b] - ERR[a]); const P = LAB.filter(x => x).length, Nn = LAB.length - P;
+const ROC = [[0, 0]]; let tp = 0, fp = 0; for (const i of order) { if (LAB[i]) tp++; else fp++; ROC.push([fp / Nn, tp / P]); }
+let auc = 0; for (let i = 1; i < ROC.length; i++) auc += (ROC[i][0] - ROC[i - 1][0]) * (ROC[i][1] + ROC[i - 1][1]) / 2;
+const thumbIds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161].sort((a, b) => (a * 7919) % 24 - (b * 7919) % 24);
+thumbIds.forEach(i => $('#thumbs').append(h('button', { class: LAB[i] ? 'a' : '', 'data-i': i, onclick: () => { cur = i; custom = null; render(); } }, (() => { const c = grayCanvas(IMG[i], 8, 8, { scale: 1, max: 1 }); c.style.width = '100%'; c.style.height = '100%'; return c; })())));
+function render() {
+  // histogramme
+  const nb = 40, bw = mx / nb, c0 = new Array(nb).fill(0), c1 = new Array(nb).fill(0);
+  ERR.forEach((e, i) => { const b = Math.min(nb - 1, Math.floor(e / bw)); (LAB[i] ? c1 : c0)[b]++; });
+  const m = Math.max(...c0, ...c1), Wd = 540, Hd = 200, X = v => 30 + v / mx * (Wd - 40), Y = n => Hd - n / m * (Hd - 20);
+  let s = `<svg viewBox="0 0 ${Wd} ${Hd + 28}">`;
+  for (let b = 0; b < nb; b++) { s += `<rect x="${X(b * bw)}" y="${Y(c0[b])}" width="${X(bw) - 30 - 1}" height="${Hd - Y(c0[b])}" fill="var(--accent)" fill-opacity=".6"/><rect x="${X(b * bw)}" y="${Y(c1[b])}" width="${X(bw) - 30 - 1}" height="${Hd - Y(c1[b])}" fill="var(--neg)" fill-opacity=".5"/>`; }
+  s += `<line x1="30" x2="${Wd - 10}" y1="${Hd}" y2="${Hd}" stroke="var(--line)"/><line x1="${X(th)}" x2="${X(th)}" y1="8" y2="${Hd}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="5 3"/><text x="${X(th) + 5}" y="18" font-size="11" fill="var(--ink)">seuil</text>`;
+  if (custom !== null) s += `<circle cx="${X(Math.min(custom, mx))}" cy="${Hd - 6}" r="6" fill="var(--hl)"/>`;
+  s += `<rect x="${Wd - 210}" y="6" width="10" height="10" fill="var(--accent)" fill-opacity=".6"/><text x="${Wd - 196}" y="15" font-size="11" fill="var(--muted)">normales</text><rect x="${Wd - 130}" y="6" width="10" height="10" fill="var(--neg)" fill-opacity=".5"/><text x="${Wd - 116}" y="15" font-size="11" fill="var(--muted)">avec tache</text>`;
+  s += `<text x="${Wd - 10}" y="${Hd + 22}" font-size="11" fill="var(--muted)" text-anchor="end">erreur de reconstruction (MSE) →</text></svg>`;
+  $('#hist').innerHTML = s;
+  // matrice de confusion
+  let TP = 0, FP = 0, TN = 0, FN = 0; ERR.forEach((e, i) => { const pr = e > th; if (pr && LAB[i]) TP++; else if (pr) FP++; else if (LAB[i]) FN++; else TN++; });
+  const tpr = TP / P, fpr = FP / Nn;
+  $('#cm').innerHTML = `<div class="h"></div><div class="h">prédit normal</div><div class="h">prédit anomalie</div><div class="h">normal</div><div>${TN}</div><div style="background:color-mix(in oklab,var(--neg) 18%,var(--zero))">${FP} fausses alarmes</div><div class="h">anomalie</div><div style="background:color-mix(in oklab,var(--neg) 18%,var(--zero))">${FN} manquées</div><div style="background:var(--accent-soft)">${TP}</div>`;
+  $('#kpis').innerHTML = `<div class="kpi"><div class="v">${fmt(100 * tpr, 0)} %</div><div class="k">anomalies détectées (rappel, TPR)</div></div><div class="kpi"><div class="v">${fmt(100 * fpr, 0)} %</div><div class="k">fausses alarmes (FPR)</div></div><div class="kpi"><div class="v">${fmt(auc, 3)}</div><div class="k">AUROC</div></div>`;
+  $('#roc').innerHTML = lineChart({ series: [{ pts: [[0, 0], [1, 1]], color: 'var(--line)', dash: '5 4', width: 1.5 }, { pts: ROC, color: 'var(--accent)', width: 2.5 }, { pts: [[fpr, tpr]], color: 'var(--ink)', dots: true, r: 6 }], w: 420, hgt: 280, xmin: 0, xmax: 1, ymin: 0, ymax: 1, xlabel: 'taux de fausses alarmes', ylabel: 'taux de détection', xticks: 5, yticks: 5, xfmt: v => fmt(v, 1), yfmt: v => fmt(v, 1) });
+  // image courante
+  $$('#thumbs button').forEach(b => b.classList.toggle('on', +b.dataset.i === cur && custom === null));
+  const x = custom !== null ? window._cx : IMG[cur], r = rec(x), e = r.map((v, i) => Math.abs(v - x[i])), er = errOf(x);
+  const T = $('#trio'); T.innerHTML = '';
+  const inp = grayCanvas(x, 8, 8, { scale: 16, max: 1 }); inp.id = 'inp';
+  inp.addEventListener('click', ev => { const rc = inp.getBoundingClientRect(), cx = Math.floor((ev.clientX - rc.left) / rc.width * 8), cy = Math.floor((ev.clientY - rc.top) / rc.height * 8); const a = Float32Array.from(x); for (let yy = Math.max(0, cy - 1); yy <= Math.min(7, cy + 1); yy++) for (let xx = Math.max(0, cx - 1); xx <= Math.min(7, cx + 1); xx++) a[yy * 8 + xx] = 1; window._cx = a; custom = errOf(a); render(); });
+  T.append(h('figure', {}, inp, h('figcaption', {}, 'entrée x')), h('figure', {}, grayCanvas(r, 8, 8, { scale: 16, max: 1 }), h('figcaption', {}, 'reconstruction x̂')), h('figure', {}, grayCanvas(e, 8, 8, { scale: 16, mode: 'heat', max: .8 }), h('figcaption', {}, 'erreur |x − x̂|')));
+  const lab = custom !== null ? 'votre image modifiée' : LAB[cur] ? 'image avec tache' : 'image normale';
+  $('#one').innerHTML = `${lab} : erreur = <span class="res">${fmt(er, 4)}</span> ${er > th ? '&gt;' : '≤'} seuil ${fmt(th, 4)} → <b style="color:${er > th ? 'var(--neg)' : 'var(--accent)'}">${er > th ? 'ANOMALIE' : 'normal'}</b>`;
+}
+// seuil initial : maximise TPR − FPR
+let best = 0; for (let t = 0; t < mx; t += mx / 400) { let a = 0, b = 0; ERR.forEach((e, i) => { if (e > t) LAB[i] ? a++ : b++; }); if (a / P - b / Nn > best) { best = a / P - b / Nn; th = t; } }
+sT.set(th); render();
+</script>
+</body>
+</html>
